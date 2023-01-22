@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 			
 			}
 		}).check();
+		getSupportActionBar().hide();
 		setContentView(R.layout.activity_main);
 		
 		buttonStar = findViewById(R.id.buttonStar);
@@ -92,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
 		buttonBackspace.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString().substring(0, phoneNumber.getText().length() - 1));
+				if (phoneNumber.getText().toString().length() > 0) {
+					phoneNumber.setText(phoneNumber.getText().toString().substring(0, phoneNumber.getText().length() - 1));
+				}
 			}
 		});
 		
