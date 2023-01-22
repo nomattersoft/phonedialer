@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 	
 	private Button 	buttonStar, buttonHash, buttonCall;
 	private ImageButton buttonBackspace;
-	private TextView phoneNumber;
+	private TextView phoneNumberField;
 	private List<Button> digitButtons = new ArrayList<>();
 	
 	
@@ -51,12 +50,6 @@ public class MainActivity extends AppCompatActivity {
 		getSupportActionBar().hide();
 		setContentView(R.layout.activity_main);
 		
-		buttonStar = findViewById(R.id.buttonStar);
-		buttonHash = findViewById(R.id.buttonHash);
-		buttonCall = findViewById(R.id.buttonCall);
-		buttonBackspace = findViewById(R.id.buttonBackspace);
-		phoneNumber = findViewById(R.id.phoneNumber);
-		
 		digitButtons.add(findViewById(R.id.button0));
 		digitButtons.add(findViewById(R.id.button1));
 		digitButtons.add(findViewById(R.id.button2));
@@ -67,30 +60,31 @@ public class MainActivity extends AppCompatActivity {
 		digitButtons.add(findViewById(R.id.button7));
 		digitButtons.add(findViewById(R.id.button8));
 		digitButtons.add(findViewById(R.id.button9));
+		buttonStar = findViewById(R.id.buttonStar);
+		buttonHash = findViewById(R.id.buttonHash);
+		buttonCall = findViewById(R.id.buttonCall);
+		buttonBackspace = findViewById(R.id.buttonBackspace);
+		phoneNumberField = findViewById(R.id.phoneNumber);
 		
-		for (int i = 0; i < digitButtons.size(); i++) {
-			int finalI = i;
-			digitButtons.get(i).setOnClickListener(view -> phoneNumber.setText(phoneNumber.getText().toString() + finalI));
+		for (Button button : digitButtons) {
+			button.setOnClickListener(view -> phoneNumberField.setText(String.format("%s%s", phoneNumberField.getText().toString(), digitButtons.indexOf(button))));
 		}
 		
-		buttonStar.setOnClickListener(view -> phoneNumber.setText(phoneNumber.getText().toString() + "*"));
-		buttonHash.setOnClickListener(view -> phoneNumber.setText(phoneNumber.getText().toString() + "#"));
+		buttonStar.setOnClickListener(view -> phoneNumberField.setText(String.format("%s%s", phoneNumberField.getText().toString(), "*")));
+		buttonHash.setOnClickListener(view -> phoneNumberField.setText(String.format("%s%s", phoneNumberField.getText().toString(), "#")));
 		buttonBackspace.setOnClickListener(view -> {
-			if (phoneNumber.getText().toString().length() > 0) {
-				phoneNumber.setText(phoneNumber.getText().toString().substring(0, phoneNumber.getText().length() - 1));
+			if (phoneNumberField.getText().toString().length() > 0) {
+				phoneNumberField.setText(phoneNumberField.getText().toString().substring(0, phoneNumberField.getText().length() - 1));
 			}
 		});
-		
 		buttonCall.setOnClickListener(view -> makePhoneCall());
 	}
 	
 	private void makePhoneCall() {
-		String number = phoneNumber.getText().toString();
-		String dial = "tel:" + number;
 		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 //			TODO: Permission denied reaction
 			return;
 		}
-		startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+		startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(String.format("%s%s", "tel:", phoneNumberField.getText().toString()))));
 	}
 }
