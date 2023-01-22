@@ -18,45 +18,20 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 	
-	Button 	button1,
-			button2,
-			button3,
-			button4,
-			button5,
-			button6,
-			button7,
-			button8,
-			button9,
-			button0,
-			buttonStar,
-			buttonHash,
-			buttonCall;
-	ImageButton buttonBackspace;
-	TextView phoneNumber;
+	private Button 	buttonStar, buttonHash, buttonCall;
+	private ImageButton buttonBackspace;
+	private TextView phoneNumber;
+	private List<Button> digitButtons = new ArrayList<>();
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		button1 = findViewById(R.id.button1);
-		button2 = findViewById(R.id.button2);
-		button3 = findViewById(R.id.button3);
-		button4 = findViewById(R.id.button4);
-		button5 = findViewById(R.id.button5);
-		button6 = findViewById(R.id.button6);
-		button7 = findViewById(R.id.button7);
-		button8 = findViewById(R.id.button8);
-		button9 = findViewById(R.id.button9);
-		button0 = findViewById(R.id.button0);
-		buttonStar = findViewById(R.id.buttonStar);
-		buttonHash = findViewById(R.id.buttonHash);
-		buttonCall = findViewById(R.id.buttonCall);
-		buttonBackspace = findViewById(R.id.buttonBackspace);
-		phoneNumber = findViewById(R.id.phoneNumber);
-		
 		Dexter.withContext(this).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
 			@Override
 			public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
@@ -73,67 +48,35 @@ public class MainActivity extends AppCompatActivity {
 			
 			}
 		}).check();
+		setContentView(R.layout.activity_main);
 		
-		button1.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "1");
-			}
-		});
-		button2.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "2");
-			}
-		});
-		button3.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "3");
-			}
-		});
-		button4.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "4");
-			}
-		});
-		button5.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "5");
-			}
-		});
-		button6.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "6");
-			}
-		});
-		button7.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "7");
-			}
-		});
-		button8.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "8");
-			}
-		});
-		button9.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "9");
-			}
-		});
-		button0.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "0");
-			}
-		});
+		buttonStar = findViewById(R.id.buttonStar);
+		buttonHash = findViewById(R.id.buttonHash);
+		buttonCall = findViewById(R.id.buttonCall);
+		buttonBackspace = findViewById(R.id.buttonBackspace);
+		phoneNumber = findViewById(R.id.phoneNumber);
+		
+		digitButtons.add(findViewById(R.id.button0));
+		digitButtons.add(findViewById(R.id.button1));
+		digitButtons.add(findViewById(R.id.button2));
+		digitButtons.add(findViewById(R.id.button3));
+		digitButtons.add(findViewById(R.id.button4));
+		digitButtons.add(findViewById(R.id.button5));
+		digitButtons.add(findViewById(R.id.button6));
+		digitButtons.add(findViewById(R.id.button7));
+		digitButtons.add(findViewById(R.id.button8));
+		digitButtons.add(findViewById(R.id.button9));
+		
+		for (int i = 0; i < digitButtons.size(); i++) {
+			int finalI = i;
+			digitButtons.get(i).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					phoneNumber.setText(phoneNumber.getText().toString() + finalI);
+				}
+			});
+		}
+		
 		buttonStar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -165,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 		String number = phoneNumber.getText().toString();
 		String dial = "tel:" + number;
 		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//			TODO: Permission denied
+//			TODO: Permission denied reaction
 			return;
 		}
 		startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
