@@ -70,41 +70,18 @@ public class MainActivity extends AppCompatActivity {
 		
 		for (int i = 0; i < digitButtons.size(); i++) {
 			int finalI = i;
-			digitButtons.get(i).setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					phoneNumber.setText(phoneNumber.getText().toString() + finalI);
-				}
-			});
+			digitButtons.get(i).setOnClickListener(view -> phoneNumber.setText(phoneNumber.getText().toString() + finalI));
 		}
 		
-		buttonStar.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "*");
-			}
-		});
-		buttonHash.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				phoneNumber.setText(phoneNumber.getText().toString() + "#");
-			}
-		});
-		buttonBackspace.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if (phoneNumber.getText().toString().length() > 0) {
-					phoneNumber.setText(phoneNumber.getText().toString().substring(0, phoneNumber.getText().length() - 1));
-				}
+		buttonStar.setOnClickListener(view -> phoneNumber.setText(phoneNumber.getText().toString() + "*"));
+		buttonHash.setOnClickListener(view -> phoneNumber.setText(phoneNumber.getText().toString() + "#"));
+		buttonBackspace.setOnClickListener(view -> {
+			if (phoneNumber.getText().toString().length() > 0) {
+				phoneNumber.setText(phoneNumber.getText().toString().substring(0, phoneNumber.getText().length() - 1));
 			}
 		});
 		
-		buttonCall.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				makePhoneCall();
-			}
-		});
+		buttonCall.setOnClickListener(view -> makePhoneCall());
 	}
 	
 	private void makePhoneCall() {
